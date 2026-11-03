@@ -9,7 +9,10 @@ masaüstü görüntüleyici. Python + Qt (PySide6) ile yazılmıştır.
 **Windows:** [Sürümler](https://github.com/tolunayakay/tif-editoru/releases) sayfasından `UyapTifViewer.exe`
 dosyasını indirip çalıştırın. Kurulum gerekmez. OCR için programda **Ayarlar → "OCR'ı kullan"** anahtarını açmanız yeterli.
 
-**macOS:** Şimdilik kaynak koddan derlenmelidir (aşağıdaki *Paketleme* bölümü).
+**macOS:** Aynı sayfadan Apple Silicon (M1 ve sonrası) için `UyapTifViewer-macOS-arm64.dmg`,
+Intel Mac için `UyapTifViewer-macOS-x86_64.dmg` dosyasını indirin, uygulamayı Uygulamalar klasörüne sürükleyin.
+Uygulama Apple tarafından onaylanmadığı için ilk açılışta **sağ tık → Aç** deyin
+(veya Sistem Ayarları → Gizlilik ve Güvenlik → "Yine de aç"). OCR için Homebrew gerekir.
 
 ## Özellikler
 
@@ -85,7 +88,10 @@ bir sürüme aynı adla yüklenmelidir. Betiğin yazdığı SHA-256 değeri `uya
 - **Windows:** `powershell -ExecutionPolicy Bypass -File build_windows.ps1`
   → `dist\UyapTifViewer.exe` (tek dosya) ve `dist\UyapTifViewer-portable.zip`
 - **macOS** (Mac üzerinde derlenmelidir): `./build_mac.sh`
-  → `dist/UYAP TIFF Görüntüleyici.app` ve `dist/UyapTifViewer.dmg`
+  → `dist/UYAP TIFF Görüntüleyici.app` ve `dist/UyapTifViewer.dmg`.
+  `v…` etiketi gönderildiğinde GitHub Actions ([.github/workflows/macos.yml](.github/workflows/macos.yml))
+  her iki işlemci için DMG'leri kendiliğinden derleyip sürüme ekler; Actions sekmesinden var olan bir sürüm için elle de çalıştırılabilir.
+- **Duman testi:** `QT_QPA_PLATFORM=offscreen python tests/smoke_test.py`
 
 Windows'ta varsayılan uygulama yapmak için: **Araçlar → Windows entegrasyonu → ilişkilendirmeyi ekle**,
 ardından açılan "Varsayılan uygulamalar" sayfasında .tif/.tiff için programı seçin

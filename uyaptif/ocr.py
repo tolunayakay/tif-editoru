@@ -350,9 +350,22 @@ class OcrManager(QObject):
                 img, dpi = load_frame(page.source, page.frame)
                 words = self.engine.words(rotate_image(img, rotation), dpi)
             except Exception as e:
-                self.failed.emit(f"{page.label}: {e}")
                 words = []
+                if not self._emit(self.failed, f"{page.label}: {e}"):
+                    return
             self._results[page.uid] = (rotation, words)
             with self._cv:
                 self._busy_uid = None
-            self.pageDone.emit(page.uid)
+                if not self._running:
+                    return
+            if not self._emit(self.pageDone, page.uid):
+                return
+
+    @staticmethod
+    def _emit(signal, value) -> bool:
+        """Program kapanırken nesne silinmiş olabilir; o durumda döngüyü bitir."""
+        try:
+            signal.emit(value)
+            return True
+        except RuntimeError:
+            return False
