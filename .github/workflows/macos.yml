@@ -35,6 +35,14 @@ jobs:
         with:
           python-version: "3.12"
 
+      # pikepdf'in (img2pdf bağımlılığı) Intel Mac için hazır paketi yok; kaynaktan derlemek için qpdf gerekir
+      - name: qpdf kur (Intel)
+        if: matrix.arch == 'x86_64'
+        run: |
+          brew install qpdf
+          echo "CPATH=$(brew --prefix qpdf)/include" >> "$GITHUB_ENV"
+          echo "LIBRARY_PATH=$(brew --prefix qpdf)/lib" >> "$GITHUB_ENV"
+
       - name: Duman testi
         env:
           QT_QPA_PLATFORM: offscreen
